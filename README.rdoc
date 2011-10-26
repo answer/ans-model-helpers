@@ -1,0 +1,59 @@
+= ans-model-helpers
+
+model に関連するヘルパー
+
+
+= DateSumupHelper
+
+日付ごとの集計を行うためのメソッド、スコープを定義する
+
+
+== メソッド
+
+=== day_in(params)
+
+ params = { day: "日付" }
+
+view の form で、日付を "day" で送信して、 params を直接このメソッドに指定すると簡単
+
+ @sumup, @day = Model.<sumup_scope>.day_in params[:sumup]
+
+ # @sumup = Model.<sumup_scope>.date_in(指定した日付)
+ # @day = 検索した日付の文字列
+
+
+=== days_in(params)
+
+ params = { month: "日付" }
+ params = { from: "日付", to: "日付" }
+
+view の form で、日付を "month" か "from", "to" で送信して、 params を直接このメソッドに指定すると簡単
+
+ @sumup, @total, (@from, @to) = Model.<sumup_scope>.days_in params[:sumup]
+
+ # @sumup = [(from から to までの日付の) Model.<sumup_scope>.date_in(一日分), ...]
+ # @total = Model.<sumup_scope>.date_in(from から to までの範囲)
+ # @from = 検索した開始日付
+ # @to = 検索した終了日付
+
+
+== スコープ
+
+=== date_in(options)
+
+* options
+  * day: DateTime
+  * from: DateTime, to: DateTime
+
+day で指定すると、その一日分の from - to where が設定される
+
+from, to で指定すると、 from の日の最初から to の日の最後までの from - to where が設定される
+
+引数はそれぞれ DateTime で指定する
+
+日付カラムは date_column メソッドから取得するので、モデルには date_column メソッドを定義しなければならない
+
+
+=== date_column_in(column,options)
+
+column を date_column ではなく、直接指定する以外は date_in と同じ
