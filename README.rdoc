@@ -7,7 +7,7 @@ model に関連するヘルパー
 
 日付ごとの集計を行うためのメソッド、スコープを定義する
 
-spec は、 model, table, date_column メソッドを定義して、 shared_examples を記述する
+spec は、 model, table, date_column メソッドを定義して、 it_should_behave_like を記述する
 
  require "ans-model-helpers/shared_examples/date_sumup.rb"
 
