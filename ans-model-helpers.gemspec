@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.version     = Ans::Model::Helpers::VERSION
   s.authors     = ["sakai shunsuke"]
   s.email       = ["sakai@ans-web.co.jp"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "https://github.com/answer/ans-model-helpers"
+  s.summary     = %q{model に関するヘルパー}
+  s.description = %q{model に関連するヘルパーを提供すする}
 
   s.rubyforge_project = "ans-model-helpers"
 
@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
   # s.add_runtime_dependency "rest-client"
+  s.add_development_dependency "ans-gem-builder"
 end
