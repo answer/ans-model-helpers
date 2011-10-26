@@ -41,9 +41,8 @@ view の form で、日付を "month" か "from", "to" で送信して、 params
 
 === date_in(options)
 
-* options
-  * day: DateTime
-  * from: DateTime, to: DateTime
+ options = { day: DateTime }
+ options = { from: DateTime, to: DateTime }
 
 day で指定すると、その一日分の from - to where が設定される
 
