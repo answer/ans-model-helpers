@@ -3,7 +3,7 @@ require "ans-model-helpers/version"
 module Ans
   module Model
     module Helpers
-      # Your code goes here...
+      autoload :DateSumupHelper, "ans-model-helpers/date_sumup_helper"
     end
   end
 end
