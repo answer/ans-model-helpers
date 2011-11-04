@@ -77,3 +77,54 @@ from, to で指定すると、 from の日の最初から to の日の最後ま�
 === date_column_in(column,options)
 
 column を date_column ではなく、直接指定する以外は date_in と同じ
+
+
+= SqlSpecHelper
+
+スコープの sql をチェックするためのスペックヘルパー
+
+model メソッドで使用するモデルを返して、 scope_は メソッドで呼び出すスコープを、 sql_は メソッドで期待する sql を指定する
+
+ module ...SpecHelper
+   include Ans::Model::Helpers::SqlSpecHelper
+
+   def model
+     Model
+   end
+ end
+
+ require "ans-model-helpers/shared_examples/sql.rb"
+
+ describe ..., ".scope_name" do
+   include ...SpecHelper
+
+   before do
+     scope_は :scope_name
+     sql_は do |sql|
+       sql << "SELECT `model`.* from `model`"
+     end
+   end
+   it_should_behave_like "Ans::Model::Helpers::Sql"
+ end
+
+スコープと sql にパラメータを渡す場合は、 @scope_params, @sql_params を設定する
+
+@scope_params はスコープにそのまま渡され、 @sql_params は sql_は メソッドのブロックに第二引数として渡される
+
+ describe ..., ".scope_name" do
+   include ...SpecHelper
+
+   before do
+     scope_は :scope_name
+     sql_は do |sql,p|
+       sql << "SELECT `model`.* from `model` WHERE column = #{p[:column]}"
+     end
+   end
+   context "... の場合" do
+     before do
+       scope_の引数は "params"
+       sql_の引数は column: "params"
+     end
+     it_should_behave_like "Ans::Model::Helpers::Sql"
+   end
+ end
