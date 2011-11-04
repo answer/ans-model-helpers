@@ -1,35 +1,40 @@
 # vi: set fileencoding=utf-8
 
+require "ans-model-helpers/shared_examples/sql"
+
 shared_examples_for "Ans::Model::Helpers::DateSumup" do
-  context "date_in" do
+  describe ".date_in" do
+    include Ans::Model::Helpers::SqlSpecHelper
+
     before do
-      @sql = proc{|p|
-        "".tap{|sql|
-          sql <<  "SELECT"
-          sql <<   " `#{table}`.*"
-          sql << " FROM"
-          sql <<   " `#{table}`"
-          sql << " WHERE"
-          sql <<   " (#{date_column} >= '#{p[:from]}') AND (#{date_column} <= '#{p[:to]}')"
-        }
-      }
+      scope_は :date_in
+      sql_は do |sql,p|
+        sql <<  "SELECT"
+        sql <<   " `#{table}`.*"
+        sql << " FROM"
+        sql <<   " `#{table}`"
+        sql << " WHERE"
+        sql <<   " (#{date_column} >= '#{p[:from]}') AND (#{date_column} <= '#{p[:to]}')"
+      end
     end
-    it "は、指定日の範囲で検索する" do
-      model.date_in(day: DateTime.new(2011, 1, 1)).to_sql.should == @sql.call(
-        from: "2011-01-01 00:00:00",
-        to:   "2011-01-01 23:59:59",
-      )
+    context "指定日の範囲で検索した場合" do
+      before do
+        scope_の引数は day: DateTime.new(2011, 1, 1)
+        sql_の引数は from: "2011-01-01 00:00:00", to: "2011-01-01 23:59:59"
+      end
+      it_should_behave_like "Ans::Model::Helpers::Sql"
     end
-    it "は、指定範囲で検索する" do
-      model.date_in(from: DateTime.new(2011, 1, 1), to: DateTime.new(2011, 1, 31)).to_sql.should == @sql.call(
-        from: "2011-01-01 00:00:00",
-        to:   "2011-01-31 23:59:59",
-      )
+    context "指定範囲で検索した場合" do
+      before do
+        scope_の引数は from: DateTime.new(2011, 1, 1), to: DateTime.new(2011, 1, 31)
+        sql_の引数は from: "2011-01-01 00:00:00", to: "2011-01-31 23:59:59"
+      end
+      it_should_behave_like "Ans::Model::Helpers::Sql"
     end
   end
 
-  context "day_in" do
-    context "日付指定無し" do
+  describe ".day_in" do
+    context "日付指定無しの場合" do
       it "は、今日の日付で範囲指定したスコープの配列を返す" do
         stub(DateTime).now{DateTime.new(2011,1,10)}
         model.day_in({}).should == [
@@ -38,7 +43,7 @@ shared_examples_for "Ans::Model::Helpers::DateSumup" do
         ]
       end
     end
-    context "day 指定" do
+    context "day 指定の場合" do
       it "は、指定した日付で範囲指定したスコープの配列を返す" do
         model.day_in(day: "2011-01-03").should == [
           model.date_in(day: DateTime.new(2011, 1, 3)),
@@ -48,8 +53,8 @@ shared_examples_for "Ans::Model::Helpers::DateSumup" do
     end
   end
 
-  context "days_in" do
-    context "日付指定無し" do
+  describe ".days_in" do
+    context "日付指定無しの場合" do
       it "は、今月の日付で範囲指定したスコープの配列を返す" do
         stub(DateTime).now{DateTime.new(2011,1,10)}
         model.days_in({}).should == [
@@ -91,7 +96,7 @@ shared_examples_for "Ans::Model::Helpers::DateSumup" do
         ]
       end
     end
-    context "month 指定" do
+    context "month 指定の場合" do
       it "は、指定した月の日付で範囲指定したスコープの配列を返す" do
         model.days_in(month: "2011-01-01").should == [
           [
@@ -132,7 +137,7 @@ shared_examples_for "Ans::Model::Helpers::DateSumup" do
         ]
       end
     end
-    context "from, to 指定" do
+    context "from, to 指定の場合" do
       it "は、指定した範囲で範囲指定したスコープの配列を返す" do
         model.days_in(from: "2011-01-01", to: "2011-01-10").should == [
           [
