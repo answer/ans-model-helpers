@@ -9,7 +9,7 @@ model に関連するヘルパー
 
 spec は、 model, table, date_column メソッドを定義して、 it_should_behave_like を記述する
 
- require "ans-model-helpers/shared_examples/date_sumup.rb"
+ require "ans-model-helpers/shared_examples/date_sumup"
 
  module ...SpecHelper
    def model
@@ -81,9 +81,11 @@ column を date_column ではなく、直接指定する以外は date_in と同
 
 = SqlSpecHelper
 
-スコープの sql をチェックするためのスペックヘルパー
+sql や association をテストするためのスペックヘルパー
 
-model メソッドで使用するモデルを返して、 scope_は メソッドで呼び出すスコープを、 sql_は メソッドで期待する sql を指定する
+belongs_to と has_many は sql 関係ないが同じ所に定義してある
+
+model メソッドで使用するモデルを返すメソッドを定義しておく
 
  module ...SpecHelper
    include Ans::Model::Helpers::SqlSpecHelper
@@ -93,7 +95,11 @@ model メソッドで使用するモデルを返して、 scope_は メソッド
    end
  end
 
- require "ans-model-helpers/shared_examples/sql.rb"
+== scope のテスト
+
+scope_は メソッドで呼び出すスコープを、 sql_は メソッドで期待する sql を指定する
+
+ require "ans-model-helpers/shared_examples/sql"
 
  describe ..., ".scope_name" do
    include ...SpecHelper
@@ -128,3 +134,73 @@ model メソッドで使用するモデルを返して、 scope_は メソッド
      it_should_behave_like "Ans::Model::Helpers::Sql"
    end
  end
+
+
+== has_many のテスト
+
+method_は メソッドで呼び出すメソッドを、 sql_は メソッドで期待する sql を指定する
+
+has_many_sql メソッドは、典型的な has_many な sql を返す、 proc を返す
+
+ require "ans-model-helpers/shared_examples/sql"
+
+ describe ... do
+   include ...SpecHelper
+
+   before do
+     method_は :assoc_name
+     sql_は &has_many_sql
+   end
+   it_should_behave_like "Ans::Model::Helpers::HasManySql"
+ end
+
+sql が has_many_sql で返されるような典型的なものでない場合は、 scope のテストと同様、 sql をここで組み立てる
+
+sql_は メソッドに引数を渡した場合、ブロックは無視される
+
+== has_many :through のテスト
+
+method_は メソッドで呼び出すメソッドを、 sql_は メソッドで期待する sql を指定する
+
+has_many_through_sql メソッドは、典型的な has_many :through な sql を返す、 proc を返す
+
+ require "ans-model-helpers/shared_examples/sql"
+
+ describe ... do
+   include ...SpecHelper
+
+   before do
+     method_は :assoc_name
+     sql_は &has_many_through_sql
+   end
+   it_should_behave_like "Ans::Model::Helpers::HasManySql"
+ end
+
+sql が has_many_through_sql で返されるような典型的なものでない場合は、 scope のテストと同様、 sql をここで組み立てる
+
+== belongs_to のテスト
+
+ require "ans-model-helpers/shared_examples/sql"
+
+ describe ... do
+   include ...SpecHelper
+
+   before do
+     method_は :assoc_name
+   end
+   it_should_behave_like "Ans::Model::Helpers::BelongsTo"
+ end
+
+== has_one のテスト
+
+ require "ans-model-helpers/shared_examples/sql"
+
+ describe ... do
+   include ...SpecHelper
+
+   before do
+     method_は :assoc_name
+   end
+   it_should_behave_like "Ans::Model::Helpers::HasOne"
+ end
+
