@@ -7,6 +7,33 @@ model に関連するヘルパー
 
 日付ごとの集計を行うためのメソッド、スコープを定義する
 
+date_column クラスメソッドを定義する
+
+ class ... < ActiveRecord::Base
+   include Ans::Model::Helpers::DateSumup
+
+   class << self
+     def date_column
+       :action_datetime
+     end
+   end
+ end
+
+日付カラムがリレーション先のテーブルにある場合は、 association を定義して、配列で返す
+
+ class ... < ActiveRecord::Base
+   include Ans::Model::Helpers::DateSumup
+
+   belongs_to :date_column_table
+
+   class << self
+     def date_column
+       [:date_column_table, :action_datetime]
+     end
+   end
+ end
+
+
 spec は、 model, table, date_column メソッドを定義して、 it_should_behave_like を記述する
 
  require "ans-model-helpers/shared_examples/date_sumup"

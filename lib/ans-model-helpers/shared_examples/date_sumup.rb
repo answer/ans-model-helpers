@@ -13,6 +13,7 @@ shared_examples_for "Ans::Model::Helpers::DateSumup" do
         sql <<   " `#{table}`.*"
         sql << " FROM"
         sql <<   " `#{table}`"
+        sql << " #{date_join}" if respond_to?(:date_join)
         sql << " WHERE"
         sql <<   " (#{date_column} >= '#{p[:from]}') AND (#{date_column} <= '#{p[:to]}')"
       end

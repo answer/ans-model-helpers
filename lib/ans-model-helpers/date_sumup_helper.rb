@@ -15,7 +15,20 @@ module Ans::Model::Helpers
             from, to = p[:from], p[:to]
           end
 
-          where("#{column} >= ?", from.beginning_of_day)
+          result = scoped
+
+          case column
+          when Array
+            tables = column
+            column = tables.pop
+
+            tables.each do |table|
+              result = result.joins table
+            end
+          end
+
+          result
+          .where("#{column} >= ?", from.beginning_of_day)
           .where("#{column} <= ?", to.end_of_day)
         }
       end
