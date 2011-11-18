@@ -24,6 +24,19 @@ shared_examples_for "Ans::Model::Helpers::HasOne" do
   end
 end
 
+shared_examples_for "Ans::Model::Helpers::HasOneThrough" do
+  describe "has_one through" do
+    before do
+      @item ||= Fabricate(model.to_s.underscore.to_sym)
+      @owner ||= Object.const_get(@scope_name.to_s.camelize).find Fabricate(@scope_name).id
+      Fabricate(@through, :"#{model.to_s.underscore}_id" => @item.id, :"#{@scope_name}_id" => @owner.id)
+    end
+    it "は、対象のモデルインスタンスを返す" do
+      @item.send(@scope_name).should == @owner
+    end
+  end
+end
+
 shared_examples_for "Ans::Model::Helpers::Sql" do
   describe "scope" do
     before do
