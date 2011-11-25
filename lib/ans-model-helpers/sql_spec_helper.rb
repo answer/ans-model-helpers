@@ -12,6 +12,15 @@ module Ans::Model::Helpers
     alias_method :"method_は", :"scope_は"
     alias_method :"method_の引数は", :"scope_の引数は"
 
+    def item_を作成(*args)
+      case
+      when defined? FactoryGirl
+        FactoryGirl.create(*args)
+      when defined? Fabricate
+        Fabricate(*args)
+      end
+    end
+
     def sql_は
       @sql = proc{|params|
         params ||= {}
