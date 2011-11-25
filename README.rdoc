@@ -114,6 +114,8 @@ belongs_to と has_many は sql 関係ないが同じ所に定義してある
 
 model メソッドで使用するモデルを返すメソッドを定義しておく
 
+フィクスチャ生成は FactoryGirl.create か Fabricate で行われる
+
  module ...SpecHelper
    include Ans::Model::Helpers::SqlSpecHelper
 
