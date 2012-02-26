@@ -12,6 +12,12 @@ module Ans::Model::Helpers
     alias_method :"method_は", :"scope_は"
     alias_method :"method_の引数は", :"scope_の引数は"
 
+    alias_method :"scope_is", :"scope_は"
+    alias_method :"scope_param_is", :"scope_の引数は"
+
+    alias_method :"method_is", :"scope_は"
+    alias_method :"method_param_is", :"scope_の引数は"
+
     def item_を作成(*args)
       case
       when defined? FactoryGirl
@@ -32,6 +38,10 @@ module Ans::Model::Helpers
     def sql_の引数は(params)
       @sql_params = params
     end
+
+    alias_method :"create_item", :"item_を作成"
+    alias_method :"sql_should_be", :"sql_は"
+    alias_method :"sql_param_is", :"sql_の引数は"
 
     def has_many_sql
       proc{|sql|
