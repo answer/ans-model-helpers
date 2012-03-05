@@ -50,6 +50,8 @@ module Ans::Model::Helpers
         sql << " FROM"
         sql <<   " `#{@scope_name}`"
         sql << " WHERE"
+        # acts_as_paranoid に対応
+        sql <<   " (#{@scope_name}.deleted_at IS NULL) AND" if @item.respond_to? :deleted_at
         sql <<   " (`#{@scope_name}`.#{model.to_s.underscore}_id = #{@item.id})"
       }
     end
@@ -64,6 +66,8 @@ module Ans::Model::Helpers
         sql <<   " `#{through}`"
         sql <<   " ON `#{@scope_name}`.id = `#{through}`.#{@scope_name.to_s.singularize}_id"
         sql << " WHERE"
+        # acts_as_paranoid に対応
+        sql <<   " (#{@scope_name}.deleted_at IS NULL) AND" if @item.respond_to? :deleted_at
         sql <<   " ((`#{through}`.#{model.to_s.underscore}_id = #{@item.id}))"
       }
     end
