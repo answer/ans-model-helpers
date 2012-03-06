@@ -200,7 +200,7 @@ has_many_through_sql メソッドは、典型的な has_many :through な sql �
 
    before do
      method_は :assoc_name
-     sql_は &has_many_through_sql
+     sql_は &has_many_through_sql(:through_table_name)
    end
    it_should_behave_like "Ans::Model::Helpers::HasManySql"
  end
