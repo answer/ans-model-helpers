@@ -187,6 +187,8 @@ sql が has_many_sql で返されるような典型的なものでない場合�
 
 sql_は メソッドに引数を渡した場合、ブロックは無視される
 
+has_many の対象のモデルが acts_as_paranoid な場合は、 has_many_paranoid_sql を代わりに使用する
+
 == has_many :through のテスト
 
 method_は メソッドで呼び出すメソッドを、 sql_は メソッドで期待する sql を指定する
@@ -206,6 +208,8 @@ has_many_through_sql メソッドは、典型的な has_many :through な sql �
  end
 
 sql が has_many_through_sql で返されるような典型的なものでない場合は、 scope のテストと同様、 sql をここで組み立てる
+
+has_many の対象のモデルが acts_as_paranoid な場合は、 has_many_paranoid_through_sql を代わりに使用する
 
 == belongs_to のテスト
 
