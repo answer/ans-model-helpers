@@ -35,6 +35,9 @@ module Ans::Model::Helpers
 
       class << mod
         def day_in(p)
+          day_column_in date_column, p
+        end
+        def day_column_in(date_column,p)
           unless p[:day]
             day = DateTime.now.beginning_of_day
           else
@@ -46,11 +49,14 @@ module Ans::Model::Helpers
           end
 
           [
-            date_in(day: day),
+            date_column_in(date_column, day: day),
             day.strftime("%Y-%m-%d"),
           ]
         end
         def days_in(p)
+          days_column_in date_column, p
+        end
+        def days_column_in(date_column,p)
           case
           when p[:from] && p[:to]
             begin
@@ -79,10 +85,10 @@ module Ans::Model::Helpers
           [
             [].tap{|dates|
               from.upto(to) do |day|
-                dates << [day, date_in(day: day)]
+                dates << [day, date_column_in(date_column,day: day)]
               end
             },
-            date_in(from: from, to: to),
+            date_column_in(date_column,from: from, to: to),
             [from, to].map{|day| day.strftime("%Y-%m-%d")},
           ]
         end
