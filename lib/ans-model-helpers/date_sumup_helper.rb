@@ -19,7 +19,7 @@ module Ans::Model::Helpers
 
           case column
           when Array
-            tables = column
+            tables = column.dup
             column = tables.pop
 
             tables.each do |table|
